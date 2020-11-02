@@ -1,6 +1,9 @@
 --UC9 Query to show salary in its components
 use payroll_service
 alter table employee_payroll
+sp_rename 'employee_payroll.salary', 'net_pay';
+
+alter table employee_payroll
 add basic_pay money default 40000,
 add taxable_pay money default 0,
 add income_tax money default 0
