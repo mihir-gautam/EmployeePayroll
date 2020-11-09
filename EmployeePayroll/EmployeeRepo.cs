@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EmployeePayroll
 {
-    class EmployeeRepo
+    public class EmployeeRepo
     {
         public static string connectionString = "Data Source=.;Initial Catalog=payroll_service;Integrated Security=True";
         SqlConnection connection;
@@ -78,7 +78,44 @@ namespace EmployeePayroll
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
-                    { 
+                    {
+                        Console.WriteLine("Record added succesfully");
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
+        }
+        /// <summary>
+        /// UC3 method to update salary of an employee into database
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="salary"></param>
+        /// <returns></returns>
+        public bool UpdateSalary(string name, decimal salary)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Update employee_payroll set basic_pay =" + salary + " where name ='" + name + "';";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+
+                    var result = cmd.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        Console.WriteLine("Salary updated successfully!");
                         return true;
                     }
                     return false;
