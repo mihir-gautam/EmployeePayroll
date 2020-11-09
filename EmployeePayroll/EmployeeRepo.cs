@@ -132,7 +132,94 @@ namespace EmployeePayroll
             }
             return false;
         }
+        private static SqlConnection ConnectionSetup()
+        {
+            return new SqlConnection("Data Source=.;Initial Catalog=payroll_service;Integrated Security=True");
+        }
+        public bool UpdateSalaryUsingStoredProcedure(string name, decimal salary)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                using (this.connection)
+                {
+                    SqlCommand command = new SqlCommand("SpUpdateSalary", this.connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@EmployeeName", name);
+                    command.Parameters.AddWithValue("@BasicPay", salary);
 
+                    this.connection.Open();
+
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
+        }
+        /// <summary>
+        /// UC5 method to retrieve employees who joined in a given date range
+        /// </summary>
+        /// <param name="date1"></param>
+        /// <param name="date2"></param>
+        public void GetEmployeesGivenDateRange(DateTime date1, DateTime date2)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                EmployeeModel employeeModel = new EmployeeModel();
+                SqlCommand command = new SqlCommand("SpGetEmployeesByStartDateRange", this.connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@StartDate1", date1);
+                command.Parameters.AddWithValue("@StartDate2", date2);
+                this.connection.Open();
+
+                SqlDataReader dr = command.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        employeeModel.EmployeeID = dr.GetInt32(0);
+                        employeeModel.EmployeeName = dr.GetString(1);
+                        employeeModel.BasicPay = dr.GetDecimal(2);
+                        employeeModel.StartDate = dr.GetDateTime(3);
+                        employeeModel.Gender = Convert.ToChar(dr.GetString(4));
+                        employeeModel.PhoneNumber = dr.GetString(5);
+                        employeeModel.Address = dr.GetString(7);
+                        employeeModel.Department = dr.GetString(6);
+                        employeeModel.Deductions = dr.GetInt32(8);
+                        employeeModel.TaxablePay = dr.GetInt32(9);
+                        employeeModel.Tax = dr.GetInt32(10);
+
+                        Console.WriteLine(employeeModel.EmployeeID + " " + employeeModel.EmployeeName + " " + employeeModel.BasicPay + " " + employeeModel.StartDate + " " + employeeModel.Gender + " " + employeeModel.PhoneNumber + " " + employeeModel.Address + " " + employeeModel.Department + " " + employeeModel.Deductions + " " + employeeModel.TaxablePay + " " + employeeModel.Tax );
+                        Console.WriteLine("\n");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No such records found");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 
 }
