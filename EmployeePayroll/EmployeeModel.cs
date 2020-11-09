@@ -20,6 +20,7 @@ namespace EmployeePayroll
         public DateTime StartDate { get; set; }
         public string City { get; set; }
         public double Country { get; set; }
+        public string JobDescription { get; set; }
 
     }
 
