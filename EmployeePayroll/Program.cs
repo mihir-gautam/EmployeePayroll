@@ -24,7 +24,29 @@ namespace EmployeePayroll
             switch (option)
             {
                 case 1:
-                    employeeRepo.AddEmployee(employee);
+                    Console.WriteLine("Enter Name ,Department, Phone no, Address, Gender, BasicPay, Deduction, Taxable Pay, Tax, NetPay ");
+                    string[] details = Console.ReadLine().Split(",");
+
+                    EmployeeModel newEmp = new EmployeeModel();
+                    newEmp.EmployeeName = details[0];
+                    newEmp.Department = details[1];
+                    newEmp.PhoneNumber = details[2];
+                    newEmp.Address = details[3];
+                    newEmp.Gender = Convert.ToChar(details[4]);
+                    newEmp.StartDate = DateTime.Today;
+                    newEmp.BasicPay = Convert.ToDecimal(details[5]);
+                    newEmp.Deductions = Convert.ToInt32(details[6]);
+                    newEmp.TaxablePay = Convert.ToInt32(details[7]);
+                    newEmp.Tax = Convert.ToInt32(details[8]);
+                    newEmp.NetPay = Convert.ToInt32(details[5]);
+
+                    bool result = employeeRepo.AddEmployee(employee);
+                    if (result == false)
+                    {
+                        Console.WriteLine("Employee can not be added.");
+                        break;
+                    }
+                    Console.WriteLine("Records added successfully");
                     break;
                 case 2:
                     employeeRepo.GetAllEmployee();
