@@ -18,7 +18,8 @@ namespace EmployeePayroll
             employee.Deductions = 1500;
             employee.StartDate = employee.StartDate = Convert.ToDateTime("2020-11-03");
 
-            Console.WriteLine("Enter your choice: \n1.Insert New Employee data \n2.Show all employees \n3.Update salary of an employee \n4.Get employee joined on a given date range");
+            Console.WriteLine("Enter your choice: \n1.Insert New Employee data \n2.Show all employees \n3.Update salary of an employee \n4.Get employee joined on a given date range" +
+                "\n5.Get salary details group by gender");
             int option = int.Parse(Console.ReadLine());
             switch (option)
             {
@@ -39,6 +40,9 @@ namespace EmployeePayroll
                     Console.WriteLine("Enter Dates");
                     string[] dates = Console.ReadLine().Split(",");
                     employeeRepo.GetEmployeesGivenDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
+                    break;
+                case 5:
+                    employeeRepo.GetSalaryDetailsByGender();
                     break;
             }
         }
