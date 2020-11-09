@@ -7,6 +7,7 @@ namespace EmployeePayroll
 {
     public class EmployeeRepo
     {
+
         public static string connectionString = "Data Source=.;Initial Catalog=payroll_service;Integrated Security=True";
         SqlConnection connection;
         public void GetAllEmployee()
