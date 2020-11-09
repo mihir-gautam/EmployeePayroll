@@ -13,7 +13,6 @@ namespace EmployeePayrollMSTest
             EmployeeRepo employeeRepo = new EmployeeRepo();
             string name = "Terissa";
             decimal salary = 3000000M;
-
             bool result = employeeRepo.UpdateSalary(name, salary);
 
             Assert.AreEqual(true, result);

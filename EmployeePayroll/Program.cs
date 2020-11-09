@@ -39,7 +39,6 @@ namespace EmployeePayroll
                     newEmp.TaxablePay = Convert.ToInt32(details[7]);
                     newEmp.Tax = Convert.ToInt32(details[8]);
                     newEmp.NetPay = Convert.ToInt32(details[5]);
-
                     bool result = employeeRepo.AddEmployee(employee);
                     if (result == false)
                     {
