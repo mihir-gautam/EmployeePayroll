@@ -119,5 +119,19 @@ namespace EmployeePayrollRestSharpTest
             Assert.AreEqual(16000, dataResponse.Salary);
             Console.WriteLine(response.Content);
         }
+        /// <summary>
+        /// UC5 Test case to verify employee is deleted from json server or not
+        /// </summary>
+        [TestMethod]
+        public void GivenEmployeeId_OnDelete_ShouldReturnSuccessStatus()
+        {
+            //arrange
+            RestRequest request = new RestRequest("/employees/17", Method.DELETE);
+            //act
+            IRestResponse response = client.Execute(request);
+            //assert
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+            Console.WriteLine(response.Content);
+        }
     }
 }
