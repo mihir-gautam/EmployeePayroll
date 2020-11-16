@@ -68,5 +68,33 @@ namespace EmployeePayrollRestSharpTest
             Assert.AreEqual("Mihir", dataResponse.name);
             Assert.AreEqual(15000, dataResponse.Salary);
         }
+        /// <summary>
+        /// UC3 Test method to verify multiple employees are added to the json server
+        /// </summary>
+        [TestMethod]
+        public void AfterAddingMultipleEmployees_onCallingGETApi_ReturnEmployeesCount()
+        {
+            //arrange
+            List<Employee> empList = new List<Employee>();
+            Employee employee1 = new Employee { name = "Manish", Salary = 15000 };
+            Employee employee2 = new Employee { name = "Prakash", Salary = 25000 };
+            empList.Add(employee1);
+            empList.Add(employee2);
+            foreach (Employee employee in empList)
+            {
+                //act
+                RestRequest request = new RestRequest("/employees/create", Method.POST);
+                JObject jObject = new JObject();
+                jObject.Add("name", employee.name);
+                jObject.Add("salary", employee.Salary);
+                request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+                //Assert
+                Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.Created);
+                Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+                Assert.AreEqual(employee.name, dataResponse.name);
+                Assert.AreEqual(employee.Salary, dataResponse.Salary);
+            }
+        }
     }
 }
