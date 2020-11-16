@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 
 namespace EmployeePayrollRestSharpTest
@@ -94,7 +95,29 @@ namespace EmployeePayrollRestSharpTest
                 Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
                 Assert.AreEqual(employee.name, dataResponse.name);
                 Assert.AreEqual(employee.Salary, dataResponse.Salary);
+                List<Employee> dataResponse2 = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
+                Assert.AreEqual(13, dataResponse2.Count);
             }
+        }
+        /// <summary>
+        /// UC4 Test method to verify if salary is updated or not
+        /// </summary>
+        [TestMethod]
+        public void GivenEmployee_OnUpdate_ShouldReturnUpdatedEmployee()
+        {
+            //arrange 
+            RestRequest request = new RestRequest("/employees/10", Method.PUT);
+            JObject jObjectBody = new JObject();
+            jObjectBody.Add("name", "Manish");
+            jObjectBody.Add("Salary", "16000");
+            request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            //assert
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+            Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("Manish", dataResponse.name);
+            Assert.AreEqual(16000, dataResponse.Salary);
+            Console.WriteLine(response.Content);
         }
     }
 }
