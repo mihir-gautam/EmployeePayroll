@@ -20,4 +20,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --logger "trx;LogFileName=test_results.xml" --results-directory TestResults --configuration Release
+    - name: Publish
+      run: dotnet publish --configuration Release
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: MyProject
+        path: bin/Release/netcoreapp3.1
+      
