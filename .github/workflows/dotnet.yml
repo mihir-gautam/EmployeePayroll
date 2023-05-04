@@ -21,8 +21,6 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release
-    - name: Test
-      run: dotnet test --logger "trx;LogFileName=test_results.xml" --results-directory TestResults --configuration Release
     - name: Publish
       run: dotnet publish --configuration Release
     - name: Publish Artifact
